@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Cotton Nest | Scratch & Win</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #fff8f0;
+      text-align: center;
+      padding-top: 40px;
+      color: #4a3f35;
+    }
+    .logo {
+      margin-bottom: 20px;
+    }
+    .logo img {
+      height: 60px;
+    }
+    h2 {
+      margin-bottom: 10px;
+      font-size: 24px;
+      color: #7a5c4f;
+    }
+    .tagline {
+      font-size: 16px;
+      margin-bottom: 30px;
+      color: #a88c7f;
+    }
+    #card {
+      position: relative;
+      width: 300px;
+      height: 150px;
+      margin: auto;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      overflow: hidden;
+    }
+    #offer {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      font-size: 24px;
+      color: #4a3f35;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1;
+    }
+    canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 2;
+      cursor: crosshair;
+    }
+  </style>
+</head>
+<body>
+
+<div class="logo">
+  <!-- Replace with actual logo URL -->
+  <img src="C:\Users\saura\OneDrive\Desktop\WhatsApp Image 2025-09-05 at 12.04.36_757928a2.jpg" alt="Cotton Nest Logo">
+</div>
+
+<h2>🎁 Scratch & Win with Cotton Nest</h2>
+<div class="tagline">Soft rewards for cozy shoppers</div>
+
+<div id="card">
+  <div id="offer">You won ₹<span id="amount"></span>!</div>
+  <canvas id="cover"></canvas>
+</div>
+
+<script>
+  const canvas = document.getElementById('cover');
+  const ctx = canvas.getContext('2d');
+  const amountSpan = document.getElementById('amount');
+
+  // Use a unique key for Cotton Nest
+  const STORAGE_KEY = 'cottonNestScratchReward';
+
+  // Check if user already scratched
+  let storedAmount = localStorage.getItem(STORAGE_KEY);
+
+  if (storedAmount) {
+    amountSpan.textContent = storedAmount;
+    canvas.style.display = 'none'; // Hide scratch layer
+  } else {
+    const randomAmount = Math.floor(Math.random() * 21) + 30; // ₹30–₹50
+    amountSpan.textContent = randomAmount;
+    localStorage.setItem(STORAGE_KEY, randomAmount);
+  }
+
+  canvas.width = 300;
+  canvas.height = 150;
+
+  ctx.fillStyle = 'silver';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  canvas.addEventListener('mousedown', () => {
+    canvas.addEventListener('mousemove', scratch);
+  });
+
+  canvas.addEventListener('mouseup', () => {
+    canvas.removeEventListener('mousemove', scratch);
+  });
+
+  function scratch(e) {
+    const rect = canvas.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    ctx.globalCompositeOperation = 'destination-out';
+    ctx.beginPath();
+    ctx.arc(x, y, 20, 0, Math.PI * 2);
+    ctx.fill();
+  }
+</script>
+
+</body>
+</html>
